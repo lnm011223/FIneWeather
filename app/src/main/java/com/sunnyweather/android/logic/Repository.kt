@@ -11,16 +11,17 @@ import java.lang.Exception
 import java.lang.RuntimeException
 
 object Repository {
+
     fun searchPlaces(query: String) = liveData(Dispatchers.IO) {
         val result = try {
             val placeResponse = SunnyWeatherNetwork.searchPlaces(query)
-            if (placeResponse.status == "Ok") {
-                val places =placeResponse.places
+            if (placeResponse.status == "ok") {
+                val places = placeResponse.places
                 Result.success(places)
-            }else{
+            } else {
                 Result.failure(RuntimeException("response status is ${placeResponse.status}"))
             }
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             Result.failure<List<Place>>(e)
         }
         emit(result)
